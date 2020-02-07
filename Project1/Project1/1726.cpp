@@ -157,7 +157,6 @@ int main() {
 
 	BFS();
 	
-
 	cout << ans << '\n';
 
 	return 0;
