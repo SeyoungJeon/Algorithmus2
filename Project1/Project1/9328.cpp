@@ -118,7 +118,7 @@ int main() {
 		if(entrance.size() != 0)
 			func(entrance);
 
-		cout << "´ä : ";
+		//cout << "´ä : ";
 		cout << ans << '\n';
 
 				
