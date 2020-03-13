@@ -69,7 +69,10 @@
     <ClCompile Include="2644.cpp">
       <Filter>소스 파일\OKKY\4주차</Filter>
     </ClCompile>
-    <ClCompile Include="2589cpp.cpp">
+    <ClCompile Include="2589.cpp">
+      <Filter>소스 파일\OKKY\4주차</Filter>
+    </ClCompile>
+    <ClCompile Include="14502.cpp">
       <Filter>소스 파일\OKKY\4주차</Filter>
     </ClCompile>
   </ItemGroup>
