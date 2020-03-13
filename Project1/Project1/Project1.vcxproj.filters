@@ -16,6 +16,12 @@
     <Filter Include="소스 파일\Baekjoon">
       <UniqueIdentifier>{aa03824b-1e46-48f4-bda3-4b82b9a001ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\OKKY">
+      <UniqueIdentifier>{7a7833de-332b-4a51-ba14-fd3866a88db0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\OKKY\4주차">
+      <UniqueIdentifier>{a9475426-703b-40dc-afc3-4424e84a4a17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="16918.cpp">
@@ -59,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="10844.cpp">
       <Filter>소스 파일\Baekjoon</Filter>
+    </ClCompile>
+    <ClCompile Include="2644.cpp">
+      <Filter>소스 파일\OKKY\4주차</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
