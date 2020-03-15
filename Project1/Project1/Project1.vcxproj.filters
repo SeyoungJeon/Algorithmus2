@@ -87,5 +87,8 @@
     <ClCompile Include="2493.cpp">
       <Filter>소스 파일\OKKY\1주차</Filter>
     </ClCompile>
+    <ClCompile Include="4344.cpp">
+      <Filter>소스 파일\OKKY\1주차</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
