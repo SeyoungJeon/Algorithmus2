@@ -16,6 +16,12 @@
     <Filter Include="소스 파일\Level2">
       <UniqueIdentifier>{d5bf5dda-3b09-4166-8a62-1789a15675e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Level3">
+      <UniqueIdentifier>{d5abaa5d-0b99-42b7-8776-dedd0acfc5a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Practice">
+      <UniqueIdentifier>{e5204cc8-0609-4677-87bd-1743d472d886}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1.cpp">
@@ -35,6 +41,18 @@
     </ClCompile>
     <ClCompile Include="6.cpp">
       <Filter>소스 파일\Level2</Filter>
+    </ClCompile>
+    <ClCompile Include="3-1.cpp">
+      <Filter>소스 파일\Level3</Filter>
+    </ClCompile>
+    <ClCompile Include="3-2.cpp">
+      <Filter>소스 파일\Level3</Filter>
+    </ClCompile>
+    <ClCompile Include="P1.cpp">
+      <Filter>소스 파일\Practice</Filter>
+    </ClCompile>
+    <ClCompile Include="P2.cpp">
+      <Filter>소스 파일\Practice</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
