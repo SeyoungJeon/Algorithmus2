@@ -79,9 +79,6 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	cout << solution("17") << '\n';
-	cnt = 0;
-	cout << solution("011") << '\n';
 
 	return 0;
 }
