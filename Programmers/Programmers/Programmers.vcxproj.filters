@@ -87,5 +87,8 @@
     <ClCompile Include="P13.cpp">
       <Filter>소스 파일\Practice</Filter>
     </ClCompile>
+    <ClCompile Include="P14.cpp">
+      <Filter>소스 파일\Practice</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

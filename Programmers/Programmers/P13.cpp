@@ -20,12 +20,6 @@ vector<int> solution(vector<int> array, vector<vector<int>> commands) {
 
 		sort(temp.begin(), temp.end());
 		
-		
-		for (auto m : temp) {
-			cout << m << ' ';
-		}
-		cout << '\n';
-
 		answer.push_back(temp[elem]);
 	}
 
