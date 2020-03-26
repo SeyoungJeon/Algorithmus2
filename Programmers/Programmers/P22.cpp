@@ -65,8 +65,6 @@ vector<int> solution(vector<string> operations) {
 		answer.push_back(pq2.top());
 	}
 
-//	cout << answer[0] << ' ' << answer[1] << '\n';
-
 	return answer;
 }
 
