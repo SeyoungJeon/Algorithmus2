@@ -117,6 +117,9 @@
     <ClCompile Include="3-4.cpp">
       <Filter>소스 파일\Level3</Filter>
     </ClCompile>
+    <ClCompile Include="P23.cpp">
+      <Filter>소스 파일\Practice</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="P21.cpp">
