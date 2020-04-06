@@ -1,10 +1,8 @@
 #include <iostream>
-#include <map>
 
 using namespace std;
 
 int T, n;
-map<int, int> m;
 
 int main() {
 	ios_base::sync_with_stdio(false);
