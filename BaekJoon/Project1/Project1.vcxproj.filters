@@ -34,6 +34,9 @@
     <Filter Include="소스 파일\OKKY\3주차">
       <UniqueIdentifier>{f5f2f926-ce12-464b-90f5-a78adedeb121}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\OKKY\6주차">
+      <UniqueIdentifier>{a7b5dbe7-26b9-495d-8891-c749a8a8b8a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="16918.cpp">
@@ -164,6 +167,9 @@
     </ClCompile>
     <ClCompile Include="1613.cpp">
       <Filter>소스 파일\OKKY\3주차</Filter>
+    </ClCompile>
+    <ClCompile Include="2163.cpp">
+      <Filter>소스 파일\OKKY\6주차</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
