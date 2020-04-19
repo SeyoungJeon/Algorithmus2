@@ -1,141 +1,142 @@
 #include <iostream>
 #include <queue>
+#include <limits.h>
 
-#define RIGHT 1
-#define LEFT 2
-#define DOWN 3
-#define UP 4
+#define E 1
+#define W 2
+#define S 3
+#define N 4
 
 using namespace std;
 
-struct Data {
+struct Pos {
 	int y;
 	int x;
 	int dir;
 	int cnt;
 };
 
-int N, M, ans = 987654321;
-int dir[4][2] = { {-1,0},{1,0},{0,1},{0,-1} };
-int cur_y, cur_x, cur_dir;
-int des_y, des_x, des_dir;
-bool map[100][100], check[5][100][100];
+int R, C, s_r, s_c, s_d, d_r, d_c, d_d , answer = INT_MAX;
+bool **map, ***visit;
 
-bool ExistWall(int y, int x, int dir, int k){
-	int dir_y = 0, dir_x = 0;
-	
-	bool exist = false;
 
-	switch (dir) {
-	case UP:
-		dir_y = -1;
+int TurnLeft(int curDir) {
+	switch (curDir) {
+	case N:
+		curDir = W;
 		break;
-	case DOWN:
-		dir_y = 1;
+	case E:
+		curDir = N;
 		break;
-	case LEFT:
-		dir_x = -1;
+	case S:
+		curDir = E;
 		break;
-	case RIGHT:
-		dir_x = 1;
+	case W:
+		curDir = S;
 		break;
 	}
 
-	int ny = y, nx = x;
-	for (int i = 0; i < k; i++) {
-		ny += dir_y;
-		nx += dir_x;
+	return curDir;
+}
 
-		if (map[ny][nx]) {
-			exist = true;
-			break;
-		}
+int TurnRight(int curDir) {
+	switch (curDir) {
+	case N:
+		curDir = E;
+		break;
+	case E:
+		curDir = S;
+		break;
+	case S:
+		curDir = W;
+		break;
+	case W:
+		curDir = N;
+		break;
 	}
 
-	return exist;
+	return curDir;
 }
 
 void BFS() {
-	queue<Data> q;
-	q.push({ cur_y - 1, cur_x - 1, cur_dir, 0 });
-	check[cur_dir][cur_y-1][cur_x-1] = true;
+	queue<Pos> q;
+	q.push({ s_r,s_c,s_d,0 });
+	visit[s_r][s_c][s_d] = true;
 
 	while (!q.empty()) {
-		int y = q.front().y;
-		int x = q.front().x;
-		int dir = q.front().dir;
-		int cnt = q.front().cnt;
+		int curY = q.front().y;
+		int curX = q.front().x;
+		int curDir = q.front().dir;
+		int curCnt = q.front().cnt;
 
 		q.pop();
 
-		if (y == des_y - 1 && x == des_x - 1 && dir == des_dir) {
-			if (ans > cnt) {
-				ans = cnt;
-				return;
-			}
+		// 도착지점일 경우
+		if (curY == d_r && curX == d_c && curDir == d_d) {
+			if (answer > curCnt)
+				answer = curCnt;
+
+			return;
 		}
 
-		int n_dir = dir;
+		int right = TurnRight(curDir), left = TurnLeft(curDir);
 
-		// 왼쪽으로만 회전 
-		for (int i = 0; i < 3; i++) {
-			switch (n_dir) {
-			case UP:
-				n_dir = LEFT;
-				break;
-			case DOWN:
-				n_dir = RIGHT;
-				break;
-			case LEFT:
-				n_dir = DOWN;
-				break;
-			case RIGHT:
-				n_dir = UP;
-				break;
-			}
-
-			if (check[n_dir][y][x])
-				continue;
-
-			check[n_dir][y][x] = true;
-
-			if (i == 0 || i == 2) {
-				q.push({ y,x,n_dir,cnt + 1 });
-			}
-			else {
-				q.push({ y,x,n_dir,cnt + 2 });
-			}
+		// 오른쪽 회전
+		if (!visit[curY][curX][right]){
+			visit[curY][curX][right] = true;
+			q.push({ curY,curX,right,curCnt + 1 });
 		}
 
-		for (int len = 3; len >= 1; len--) {
-			int ny = y, nx = x;
-			switch (dir) {
-			case UP:
-				ny = y - len;
-				break;
-			case DOWN:
-				ny = y + len;
-				break;
-			case LEFT:
-				nx = x - len;
-				break;
-			case RIGHT:
-				nx = x + len;
-				break;
+		// 왼쪽 회전
+		if (!visit[curY][curX][left]){
+			visit[curY][curX][left] = true;
+			q.push({ curY,curX,left,curCnt + 1 });
+		}
+
+		// 3 ~ 1 방향에 따른 전진
+		for (int go = 3; go >= 1; go--) {
+			int ny = curY, nx = curX;
+
+			bool possible = true;
+
+			for (int i = 1; i <= go; i++) {
+				switch (curDir) {
+				case N:
+					ny -= 1;
+					break;
+				case E:
+					nx += 1;
+					break;
+				case S:
+					ny += 1;
+					break;
+				case W:
+					nx -= 1;
+					break;
+				}
+
+				// 맵 범위 벗어났을 경우
+				if (ny < 1 || ny > R || nx < 1 || nx > C) {
+					possible = false;
+					break;
+				}
+
+				// 벽으로 가로 막혀있을 경우
+				if (map[ny][nx]) {
+					possible = false;
+					break;
+				}
 			}
 
-			if (ny < 0 || ny >= N || nx < 0 || nx >= M)
+			if (!possible)
 				continue;
 			
-			if (map[ny][nx] || check[dir][ny][nx])
+			// 이미 방문했던 위치라면
+			if (visit[ny][nx][curDir])
 				continue;
 
-			if (ExistWall(y, x, dir, len - 1))
-				continue;
-
-			check[dir][ny][nx] = true;
-
-			q.push({ ny,nx,dir,cnt + 1 });
+			visit[ny][nx][curDir] = true;
+			q.push({ ny,nx,curDir,curCnt + 1 });
 		}
 	}
 }
@@ -144,20 +145,38 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	cin >> N >> M;
+	// 맵 가로 세로 입력 받기
+	cin >> R >> C;
 
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < M; j++) {
+	// 2차원 맵 배열, 3차원 방문 배열 초기화
+	map = new bool*[R + 1];
+	visit = new bool**[R + 1];
+	for (int i = 0; i <= R; i++) {
+		map[i] = new bool[C + 1];
+		fill_n(map[i], C + 1, false);
+		visit[i] = new bool*[C + 1];
+		for (int j = 0; j <= C; j++) {
+			visit[i][j] = new bool[5];
+			fill_n(visit[i][j], 5, false);
+		}
+	}
+	
+	// 맵 배열 입력 받기
+	for (int i = 1;  i <= R; i++) {
+		for (int j = 1; j <= C; j++) {
 			cin >> map[i][j];
 		}
 	}
-
-	cin >> cur_y >> cur_x >> cur_dir;
-	cin >> des_y >> des_x >> des_dir;
-
-	BFS();
 	
-	cout << ans << '\n';
+	// 출발지점, 도착지점 입력 받기
+	cin >> s_r >> s_c >> s_d;
+	cin >> d_r >> d_c >> d_d;
+
+	// 탐색
+	BFS();
+
+	// 정답 출력
+	cout << answer << '\n';
 
 	return 0;
 }
