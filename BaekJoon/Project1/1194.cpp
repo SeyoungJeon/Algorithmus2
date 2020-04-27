@@ -1,94 +1,66 @@
-// 잠시 보류!
+// 비트마스크
 #include <iostream>
-#include <vector>
-#include <stack>
+#include <queue>
 
 using namespace std;
 
-int N, M,ans = 987654321;
+struct Pos {
+	int y;
+	int x;
+	int k;
+};
+
+int N, M, sy, sx, dir[4][2] = { {-1,0},{1,0},{0,-1},{0,1} };
 char map[50][50];
-bool check[50][50],temp_check[50][50];
-int dir[4][2] = { {-1,0},{1,0},{0,-1},{0,1} };
-bool key[6] = { 0,0,0,0,0,0 };
-vector<pair<int, int>> pos;
-stack<int> prev_pos;
+int visit[50][50][64];
 
-void DFS(int row, int col, int result) {
-	if (map[row][col] == '1') {
-		if (ans > result) {
-			ans = result;
+int BFS() {
+	queue<Pos> q;
+
+	q.push({ sy,sx,0 });
+
+	while (!q.empty()) {
+		int y = q.front().y;
+		int x = q.front().x;
+		int k = q.front().k;
+
+		q.pop();
+
+		if (map[y][x] == '1') {
+			return visit[y][x][k];
 		}
 
-		return;
-	}
-
-	int find_key = -1;
-
-	if (map[row][col] >= 'a' && map[row][col] <= 'f') {
-		find_key = map[row][col] - 'a';
-		key[find_key] = true;
-		map[row][col] = '.';
-
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < M; j++) {
-				temp_check[i][j] = check[i][j];
-			}
-		}
-
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < M; j++) {
-				check[i][j] = true;
-			}
-		}
-
-		// prev_pos.push(pos.size());
-	}
-
-	check[row][col] = true;
-
-	cout << row << ' ' << col << '\n';
-	for (int i = 0; i < 4; i++) {
-		int ny = row + dir[i][0];
-		int nx = col + dir[i][1];
-
+		for (int i = 0; i < 4; i++) {
+			int ny = y + dir[i][0];
+			int nx = x + dir[i][1];
+			int nk = k;
 		
-		cout << "NEXT POS : " << ny << ' ' << nx << '\n';
-		// 맵 경계를 벗어났을 경우
-		if (ny < 0 || ny >= N || nx < 0 || nx >= M)
-			continue;
-
-		// '#' 위치인 경우
-		if (map[ny][nx] == '#')
-			continue;
-
-	
-		// 문을 만났는데 열쇠를 소지하지 않았을 경우
-		if (map[ny][nx] >= 'A' && map[ny][nx] <= 'F') {
-			if (!key[map[ny][nx] - 'A'])
+			// 위치를 벗어나거나 벽일 경우
+			if (ny < 0 || ny >= N || nx < 0 || nx >= M || map[ny][nx] == '#')
 				continue;
-		}
-		
-		// 이미 방문했던 칸인 경우
-		if (check[ny][nx])
-			continue;
 
-		//pos.push_back({ ny,nx });
-		DFS(ny, nx, result + 1);
-		//pos.pop_back();
-
-		cout << "현재 CUR : " << row << ' ' << col << '\n';
-	}
-
-	if (find_key != -1) {
-		key[find_key] = false;
-		map[row][col] = find_key + 'a';
-		
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < M; j++) {
-				check[i][j] = temp_check[i][j];
+			// 이미 방문했던 경우라면
+			if (visit[ny][nx][nk])
+				continue;
+			
+			// 열쇠를 발견했을 경우
+			if ('a' <= map[ny][nx] && map[ny][nx] <= 'f') {
+				nk |= (1 << (map[ny][nx] - 'a'));	 // Shift 연산으로 열쇠 표시
 			}
+			// 문을 발견했을 경우
+			else if ('A' <= map[ny][nx] && map[ny][nx] <= 'F') {
+				if (!(nk & (1 << (map[ny][nx] - 'A'))))	// Shift 연산 후 열쇠가 존재한다면
+					continue;
+			}
+
+			q.push({ ny,nx,nk });
+
+			// DP 처럼 다음 위치에 하나씩 늘리기 
+			visit[ny][nx][nk] = visit[y][x][k] + 1;
 		}
 	}
+
+	return -1;
 }
 
 int main() {
@@ -97,23 +69,17 @@ int main() {
 
 	cin >> N >> M;
 
+	// 맵 정보 입력 받기
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < M; j++) {
 			cin >> map[i][j];
-			if (map[i][j] == '0')
-				pos.push_back({ i,j });
+			if (map[i][j] == '0') {
+				sy = i; sx = j;
+			}
 		}
 	}
-
-	prev_pos.push(0);
-	DFS(pos[0].first, pos[0].second, 0);
-
-	if (ans == 987654321) {
-		cout << -1 << '\n';
-	}
-	else {
-		cout << ans << '\n';
-	}
+	
+	cout << BFS() << '\n';
 
 	return 0;
 }
