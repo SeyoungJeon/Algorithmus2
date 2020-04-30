@@ -65,7 +65,6 @@ void DFS(int depth, int row, int col) {
 			}
 		}
 	}
-
 }
 
 int main() {
@@ -103,8 +102,7 @@ int main() {
 			if (v[i].height != maxHeight)
 				break;
 
-	
-				// 방문 배열 초기화
+			// 방문 배열 초기화
 			for (int i = 0; i < N; i++) {
 				fill_n(visit[i], N, false);
 			}
