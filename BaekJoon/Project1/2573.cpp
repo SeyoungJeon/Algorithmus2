@@ -36,8 +36,7 @@ int BFS(queue<Pos> q) {
 
 	while (!q.empty()) {
 		size_t size = q.size();
-		vector<Pos> tempPos;
-		map<pair<int, int>, int> tempVal;
+	
 		for (int s = 0; s < size; s++) {
 			int y = q.front().y;
 			int x = q.front().x;
@@ -53,20 +52,22 @@ int BFS(queue<Pos> q) {
 					zeroCnt++;
 			}
 
-			tempPos.push_back({ y,x });
-			tempVal[{y, x}] = zeroCnt;
-		}
-
-		for (auto k : tempPos) {
-			int y = k.y;
-			int x = k.x;
-
-			m[y][x] -= tempVal[{y, x}];
-			if (m[y][x] <= 0) {
-				m[y][x] = 0;
+			// 잠깐 다른 값으로 설정했다가
+			if (m[y][x] - zeroCnt <= 0) {
+				m[y][x] = -1;
 			}
 			else {
+				m[y][x] -= zeroCnt;
 				q.push({ y,x });
+			}
+		}
+		
+		// 여기서 복원
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if (m[i][j] == -1) {
+					m[i][j] = 0;
+				}
 			}
 		}
 
